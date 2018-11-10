@@ -3,11 +3,19 @@
 using namespace std;
 
 void rotate(vector<vector<int>>& matrix) {
-  const int N = matrix.size();
-  int rotationCount = N / 2, centerOfrotation = (N % 2 == 0) ? N/2 - 1 : N/2, rotateSize = (N % 2 == 0) ? 2 : 3;
-  for (int i = 0; i < rotationCount; ++i){
-    vector<int> temp(rotateSize);
-    vector<int> up
-  }
-  
+const int layerCount = matrix.size() / 2;
+int wallIndex = matrix.size() - 1; 
+for (int i = 0; i < layerCount; ++i){
+  for (int j = i; j < wallIndex - i; ++j){  
+      int temp1 = matrix[wallIndex - j][i]; // lower right corner   
+      int temp2 = matrix[wallIndex - i][wallIndex - j]; // lower right corner
+      int temp3 = matrix[j][wallIndex - i]; // upper right corner (only move verticle; j should be row)
+      int temp4 = matrix[i][j]; // upper left corner
+      
+      matrix[i][j] = temp1;
+      matrix[wallIndex - j][i] = temp2;
+      matrix[wallIndex - i][wallIndex - j] = temp3;
+      matrix[j][wallIndex - i] = temp4;
+    }
+  } 
 }
