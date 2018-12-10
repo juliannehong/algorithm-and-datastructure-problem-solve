@@ -31,17 +31,8 @@ Node* n12 = new Node(12);
 Node* n13 = new Node(13);
 Node* n14 = new Node(14);
 Node* n15 = new Node(15);
-array<bool, 16> visited = {false};
 
-void resetVisited(){
-  for (auto n : visited)
-    n = false;
-}
-
-void visit(Node* n){
-  cout << n->val << " ";
-  visited[n->val] = true;
-}
+array<bool, 16> discovered = {false};
 
 static void createGraph(){
   n1->connections = {n6, n2, n3};
@@ -60,6 +51,8 @@ static void createGraph(){
   n14->connections = {n13};
   n15->connections = {n13};
 }
+
+
 
 struct BFSData{
   Node* currNode;
@@ -80,16 +73,16 @@ list<Node*> createPath(BFSData* dst){
 list<Node*> shortestPath(Node* src, Node* dst){
   queue<BFSData*> q;
   q.push(new BFSData(src, nullptr));
-  visited[src->val] = true;
+  discovered[src->val] = true;
   while (!q.empty()){
     BFSData* curr = q.front();
     q.pop();
     for (auto connection : curr->currNode->connections){
-      if (!visited[connection->val]){
+      if (!discovered[connection->val]){
         if (connection == dst) {
           return createPath(new BFSData(connection, curr));
         }
-        visited[connection->val] = true;
+        discovered[connection->val] = true;
         q.push(new BFSData(connection, curr));
       }
     }
@@ -98,13 +91,4 @@ list<Node*> shortestPath(Node* src, Node* dst){
   return {};
 }
 
-int main(){
-  createGraph();
-  auto path = shortestPath(n10, n11);
-  for (auto p : path){
-    cout << p->val << " ";
-  }
-  cout << endl;
-  return 0;
-}
 
